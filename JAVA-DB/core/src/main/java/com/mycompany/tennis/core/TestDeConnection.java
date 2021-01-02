@@ -9,22 +9,18 @@ public class TestDeConnection {
         Connection conn=null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            PreparedStatement preparedStatement=conn.prepareStatement("SELECT NOM,PRENOM,ID FROM JOUEUR WHERE ID=?");
-            long identifiant=43L;
-            preparedStatement.setLong(1,identifiant);
+            PreparedStatement preparedStatement=conn.prepareStatement("UPDATE JOUEUR SET NOM=?, PRENOM=? WHERE ID=?");
+            long identifiant=24L;
+            String nom = "Errani";
+            String prenom = "Sara";
 
-            ResultSet rs=preparedStatement.executeQuery();
+            preparedStatement.setString(1,nom);
+            preparedStatement.setString(2,prenom);
+            preparedStatement.setLong(3,identifiant);
 
-            if (rs.next()){
-                final String nom=rs.getString("NOM");
-                final String prenom=rs.getString("PRENOM");
-                final Long id=rs.getLong("ID");
-                System.out.println("Le joueur / la joueuse représenté(e) par le numéro "+id+" est "+prenom+" "+nom);
-            }
-            else {
-                System.out.println("Il n'y a pas d'enregistrement d'ID 128");
-            }
+            int nbEnregistrementModifies =preparedStatement.executeUpdate();
 
+            System.out.println("nbEnregistrementModifies="+nbEnregistrementModifies);
             System.out.println("success");
         }
         catch (SQLException e){
