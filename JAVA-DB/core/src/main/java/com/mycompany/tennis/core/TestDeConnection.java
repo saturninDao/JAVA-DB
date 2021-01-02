@@ -1,4 +1,5 @@
 package com.mycompany.tennis.core;
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.*;
 
@@ -8,7 +9,24 @@ public class TestDeConnection {
 
         Connection conn=null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
+            MysqlDataSource dataSource = new MysqlDataSource();
+
+            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
+            /*
+            dataSource.setURL("jdbc:mysql://localhost:3309/tennis?useSSL=false");
+            dataSource.setUser("root");
+            dataSource.setPassword("magnoudewa#2020");
+            */
+
+            dataSource.setServerName("localhost");
+            dataSource.setPort(3309);
+            dataSource.setDatabaseName("tennis");
+            dataSource.setUseSSL(false);
+            dataSource.setUser("root");
+            dataSource.setPassword("magnoudewa#2020");
+
+
+            conn = dataSource.getConnection();
 
             conn.setAutoCommit(false);
 
@@ -29,7 +47,7 @@ public class TestDeConnection {
 
             preparedStatement.setString(1,nom);
             preparedStatement.setString(2,prenom);
-            preparedStatement.setNull(3, Types.CHAR);
+            preparedStatement.setString(3, sexe);
 
             preparedStatement.executeUpdate();
 
