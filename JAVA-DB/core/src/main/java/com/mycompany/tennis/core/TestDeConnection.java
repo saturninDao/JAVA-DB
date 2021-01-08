@@ -12,27 +12,12 @@ public class TestDeConnection {
         try {
             BasicDataSource dataSource = new BasicDataSource();
             dataSource.setInitialSize(5);
-
             //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-
             dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
             dataSource.setUsername("root");
             dataSource.setPassword("magnoudewa#2020");
 
-            /*
-
-            dataSource.setServerName("localhost");
-            dataSource.setPort(3309);
-            dataSource.setDatabaseName("tennis");
-            dataSource.setUseSSL(false);
-            dataSource.setUser("root");
-            dataSource.setPassword("magnoudewa#2020");
-
-             */
-
-
             conn = dataSource.getConnection();
-
             conn.setAutoCommit(false);
 
             PreparedStatement preparedStatement=conn.prepareStatement("INSERT INTO JOUEUR(NOM,PRENOM,SEXE) VALUES(?,?,?)");
