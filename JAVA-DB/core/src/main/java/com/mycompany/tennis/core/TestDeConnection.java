@@ -14,13 +14,16 @@ public class TestDeConnection {
         JoueurRepositoryImpl joueurRepository = new JoueurRepositoryImpl();
         Joueur bartoli = joueurRepository.getById(34L);
         System.out.println(bartoli.getNom()+" "+bartoli.getPrenom());
-        /*
+        /**/
         Joueur noah = new Joueur();
         noah.setPrenom("Yannick");
         noah.setNom("Noah");
         noah.setSexe('H');
         joueurRepository.create(noah);
-        */
+
+        System.out.println("l'ID du joueur créé est "+ noah.getId());
+
+        /**/
 
         /*
         Joueur noah = new Joueur();
@@ -34,12 +37,13 @@ public class TestDeConnection {
         joueurRepository.delete(noah.getId());
          */
 
+        /*
         List<Joueur> liste =  joueurRepository.list();
 
         for(Joueur joueur: liste){
             System.out.println(joueur.getPrenom()+" "+joueur.getNom());
         }
-
+        */
 
 
     }

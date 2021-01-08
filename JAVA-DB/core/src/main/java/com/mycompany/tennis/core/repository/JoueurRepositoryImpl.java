@@ -5,10 +5,7 @@ import com.mycompany.tennis.core.repository.entity.Joueur;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class JoueurRepositoryImpl {
 
             conn = dataSource.getConnection();
 
-            PreparedStatement preparedStatement=conn.prepareStatement("INSERT INTO JOUEUR(NOM,PRENOM,SEXE) VALUES(?,?,?)");
+            PreparedStatement preparedStatement=conn.prepareStatement("INSERT INTO JOUEUR(NOM,PRENOM,SEXE) VALUES(?,?,?) ", Statement.RETURN_GENERATED_KEYS);
             String nom = "Errani1";
             String prenom = "Sara1";
             String sexe = "F";
@@ -30,6 +27,12 @@ public class JoueurRepositoryImpl {
             preparedStatement.setString(3,joueur.getSexe().toString());
 
             preparedStatement.executeUpdate();
+
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+
+            if (rs.next()){
+                joueur.setId( rs.getLong(1));
+            }
 
             System.out.println("joeur créé");
         }
