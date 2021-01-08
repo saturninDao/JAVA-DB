@@ -1,67 +1,46 @@
 package com.mycompany.tennis.core;
+import com.mycompany.tennis.core.repository.JoueurRepositoryImpl;
+import com.mycompany.tennis.core.repository.entity.Joueur;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestDeConnection {
 
     public static void main(String... args){
+        JoueurRepositoryImpl joueurRepository = new JoueurRepositoryImpl();
+        Joueur bartoli = joueurRepository.getById(34L);
+        System.out.println(bartoli.getNom()+" "+bartoli.getPrenom());
+        /*
+        Joueur noah = new Joueur();
+        noah.setPrenom("Yannick");
+        noah.setNom("Noah");
+        noah.setSexe('H');
+        joueurRepository.create(noah);
+        */
 
-        Connection conn=null;
-        try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+        /*
+        Joueur noah = new Joueur();
+        noah = joueurRepository.getById(57L);
+        noah.setPrenom("Yannicko");
+        joueurRepository.update(noah);
+        */
 
-            conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
+        /*
+        Joueur noah = joueurRepository.getById(57L);
+        joueurRepository.delete(noah.getId());
+         */
 
-            PreparedStatement preparedStatement=conn.prepareStatement("INSERT INTO JOUEUR(NOM,PRENOM,SEXE) VALUES(?,?,?)");
-            String nom = "Errani1";
-            String prenom = "Sara1";
-            String sexe = "F";
+        List<Joueur> liste =  joueurRepository.list();
 
-            preparedStatement.setString(1,nom);
-            preparedStatement.setString(2,prenom);
-            preparedStatement.setString(3,sexe);
-
-            preparedStatement.executeUpdate();
-
-            nom = "Errani2";
-            prenom = "Sara2";
-            sexe = "H";
-
-            preparedStatement.setString(1,nom);
-            preparedStatement.setString(2,prenom);
-            preparedStatement.setString(3, sexe);
-
-            preparedStatement.executeUpdate();
-
-            conn.commit();
-
-            System.out.println("success");
+        for(Joueur joueur: liste){
+            System.out.println(joueur.getPrenom()+" "+joueur.getNom());
         }
-        catch (SQLException e){
-            e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException el) {
-                el.printStackTrace();
-            }
-        }
-        finally {
 
-            try {
-                if (conn!=null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
+
     }
 }

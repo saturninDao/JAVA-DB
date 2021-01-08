@@ -1,8 +1,10 @@
 package com.mycompany.tennis.core.repository;
 
+import com.mycompany.tennis.core.DataSourceProvider;
 import com.mycompany.tennis.core.repository.entity.Joueur;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,12 +17,7 @@ public class JoueurRepositoryImpl {
     public void create(Joueur joueur){
         Connection conn=null;
         try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+            DataSource dataSource = DataSourceProvider.getSingleDataSourceInstance();
 
             conn = dataSource.getConnection();
 
@@ -59,16 +56,11 @@ public class JoueurRepositoryImpl {
     public void update(Joueur joueur){
         Connection conn=null;
         try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+            DataSource dataSource = DataSourceProvider.getSingleDataSourceInstance();
 
             conn = dataSource.getConnection();
 
-            PreparedStatement preparedStatement=conn.prepareStatement("UPDATE JOEUR SET NOM=?, PRENOM=?, SEXE=? WHERE ID = ?");
+            PreparedStatement preparedStatement=conn.prepareStatement("UPDATE JOUEUR SET NOM=?, PRENOM=?, SEXE=? WHERE ID = ?");
             preparedStatement.setString(1,joueur.getNom());
             preparedStatement.setString(2,joueur.getPrenom());
             preparedStatement.setString(3,joueur.getSexe().toString());
@@ -101,12 +93,7 @@ public class JoueurRepositoryImpl {
     public void delete(Long id){
         Connection conn=null;
         try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+            DataSource dataSource = DataSourceProvider.getSingleDataSourceInstance();
 
             conn = dataSource.getConnection();
 
@@ -141,12 +128,7 @@ public class JoueurRepositoryImpl {
         Connection conn=null;
         Joueur joueur = null;
         try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+            DataSource dataSource = DataSourceProvider.getSingleDataSourceInstance();
 
             conn = dataSource.getConnection();
 
@@ -186,27 +168,22 @@ public class JoueurRepositoryImpl {
         return joueur;
     }
 
-    public List<Joueur> list(Long id){
+    public List<Joueur> list(){
         Connection conn=null;
         List<Joueur> joueurs = new ArrayList<>();
         try {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setInitialSize(5);
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/tennis?useSSL=false", "root", "magnoudewa#2020");
-            dataSource.setUrl("jdbc:mysql://localhost:3309/tennis?useSSL=false");
-            dataSource.setUsername("root");
-            dataSource.setPassword("magnoudewa#2020");
+            DataSource dataSource = DataSourceProvider.getSingleDataSourceInstance();
 
             conn = dataSource.getConnection();
 
-            PreparedStatement preparedStatement=conn.prepareStatement("SELECT NOM, PRENOM, SEXE FROM JOUEUR WHERE ID=");
-            preparedStatement.setLong(1,id);
+            PreparedStatement preparedStatement=conn.prepareStatement("SELECT NOM, PRENOM, SEXE FROM JOUEUR");
+            //preparedStatement.setLong(1,id);
 
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
                 Joueur joueur = new Joueur();
-                joueur.setId(id);
+                //joueur.setId(id);
                 joueur.setNom(rs.getString("NOM"));
                 joueur.setPrenom(rs.getString("PRENOM"));
                 joueur.setSexe(rs.getString("SEXE").charAt(0));
